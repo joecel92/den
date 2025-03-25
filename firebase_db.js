@@ -1,0 +1,142 @@
+import { firebaseConfig, MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+import { reload_messages } from "./main.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  push,
+  set,
+  update,
+  remove,
+  onValue,
+} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+
+const db = getDatabase(app);
+
+const clientsRef = ref(db, MESSAGES_KEY);
+
+// Listen for changes
+onValue(clientsRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    reload_messages();
+  }
+});
+
+export function PushMessage(input_message_key, input_uid, input_message) {
+  const clientsRef = ref(db, input_message_key + "/" + input_uid);
+  // Push a single value with a random key
+  push(clientsRef, input_message)
+    .then(() => {
+      //document.getElementById("inputmsg").value="";
+      // console.log("Single value pushed with a random key!");
+      //return true;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      //return false;
+    });
+}
+export function get_info(input_info_key, input_uid) {
+  const dbref = ref(db);
+  let messageText = "";
+  get(child(dbref, input_info_key + "/" + input_uid)).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          messageText += `> ${data[key]}\n`;
+        });
+      } else {
+        messageText = "";
+      }
+
+      // Set the value inside the <textarea>
+    } else {
+      alert("Employee dont exist");
+    }
+  });
+}
+export async function ReadMessage(input_message_key, input_uid) {
+  return new Promise((resolve) => {
+    const dbref = ref(db);
+    let messageText = "";
+    get(child(dbref, input_message_key + "/" + input_uid)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data) {
+          Object.keys(data).forEach((key) => {
+            messageText += `${data[key]}\n`;
+          });
+          resolve(messageText);
+        } else {
+          resolve(null);
+        }
+
+        // Set the value inside the <textarea>
+      } else {
+        resolve(null);
+      }
+    });
+  });
+  //return messageText;
+}
+export async function getmyinfo(input_info_key, input_uid) {
+  return new Promise((resolve) => {
+    const dbRef = ref(db, input_info_key+"/" + input_uid);
+    get(dbRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          let dataStr = snapshot.val(); // Get the stored string
+          let arr = dataStr.split(",").map((item) => item.trim()); // Split and trim
+
+          if (arr.length === 3) {
+      
+
+          //  alert(firstName + " " + lastName + " " + email);
+            resolve(dataStr);
+          } else {
+            resolve(null);
+            console.error("Invalid data format:", dataStr);
+          }
+        } else {
+          resolve(null);
+          console.log("No data found for this user.");
+        }
+      })
+      .catch((error) => {
+        resolve(null);
+        console.error("Error fetching data:", error);
+      });
+  });
+  //return messageText;
+}
+
+export function AddInfo(
+  input_info_key,
+  fname_input,
+  lname_input,
+  email_input,
+  input_uid
+) {
+  set(ref(db, input_info_key), {
+    [input_uid]: fname_input + "," + lname_input + "," + email_input,
+  })
+    .then(() => {
+      alert("Info added successfully!");
+    })
+    .catch((error) => {
+      alert("Unsuccessful!");
+      console.log(error);
+    });
+}
