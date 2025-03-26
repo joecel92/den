@@ -2,6 +2,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import {
+  signOut,
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
@@ -57,3 +58,17 @@ export async function signup_firebase(input_email, input_password) {
       });
   });
 }
+
+ export async function signout_firebase(){
+  return new Promise((resolve,reject)=>{
+    signOut(auth).then(() => {
+      resolve("bye bye!");
+     
+    }).catch((error) => {
+      resolve(null);
+     
+    });
+  });
+
+}
+

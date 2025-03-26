@@ -1,5 +1,9 @@
 import { AddInfo, getmyinfo, PushMessage, ReadMessage } from "./firebase_db.js";
-import { signin_firebase, signup_firebase } from "./firebase_auth.js";
+import {
+  signin_firebase,
+  signout_firebase,
+  signup_firebase,
+} from "./firebase_auth.js";
 import { MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
 
 let account_uid = "";
@@ -95,9 +99,11 @@ function check_credential_signin(input_email, input_password) {
   }
   return true;
 }
+
 export function reload_messages() {
   get_data(MESSAGES_KEY, account_uid);
 }
+
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
@@ -167,11 +173,23 @@ document.addEventListener("click", function (event) {
   } else if (event.target && event.target.id === "sendMsgBtn") {
     let msg = document.getElementById("inputmsg").value;
     // alert(account_uid);
-    msg=myfirstname+": "+msg;
+    msg = myfirstname + ": " + msg;
     PushMessage(MESSAGES_KEY, account_uid, msg);
     document.getElementById("inputmsg").value = "";
   } else if (event.target && event.target.id === "closechatbtn") {
-    document.getElementById("displ").style.display = "none";
+    SignOut_FireBase()
+    .then((RESULTS) => {
+      if (RESULTS!=null) {
+        alert(RESULTS+' '+myfirstname+" Come again!");
+        document.getElementById("displ").style.display = "none";
+      } else {
+        alert("failed signout");
+      }
+    })
+    .catch((error) => {
+      console.error("Sign-in error:", error);
+    });
+
   } else if (event.target && event.target.id === "readmsgbtn") {
     get_data(MESSAGES_KEY, account_uid);
   }
@@ -184,9 +202,8 @@ function get_name(input_key, input_uid) {
         let dataStr = RESULTS;
         let arr = dataStr.split(",").map((item) => item.trim());
         if (arr.length === 3) {
-          myfirstname=arr[0];
+          myfirstname = arr[0];
           alert("Welcome " + arr[0] + " " + arr[1]);
-
         }
       } else {
         alert("Failed to get data!");
@@ -227,4 +244,19 @@ async function get_my_info(input_info_key, input_uid) {
   } else {
     return null;
   }
+}
+
+async function SignOut_FireBase() {
+  const success = await signout_firebase();
+  if (success != null) {
+    return success;
+  } else {
+    return null;
+  }
+}
+
+function signout_account() {
+  let res="";
+
+    
 }
