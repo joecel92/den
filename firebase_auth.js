@@ -5,7 +5,7 @@ import {
   signOut,
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 import { firebaseConfig } from "./firebase_config.js";
 
@@ -17,7 +17,6 @@ const auth = getAuth(app);
 
 export async function signin_firebase(input_email, input_password) {
   return new Promise((resolve) => {
-
     signInWithEmailAndPassword(auth, input_email, input_password)
       .then((userCredential) => {
         const user = userCredential.user;

@@ -1,6 +1,6 @@
-import { firebaseConfig, MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
+import { firebaseConfig, MESSAGES_KEY } from "./firebase_config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-import { reload_messages } from "./main.js";
+import { selected_uid,get_messages } from "./main.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,8 +15,6 @@ import {
   get,
   push,
   set,
-  update,
-  remove,
   onValue,
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
@@ -26,10 +24,18 @@ const clientsRef = ref(db, MESSAGES_KEY);
 
 // Listen for changes
 onValue(clientsRef, (snapshot) => {
-  const data = snapshot.val();
-  if (data) {
-    reload_messages();
+
+  if(snapshot.exists()){
+  get_messages(MESSAGES_KEY,selected_uid);
+  
+    //if (data) {
+      
+   // }
   }
+  
+   
+     // document.getElementById("message_box").value = messageText;
+  
 });
 
 export function PushMessage(input_message_key, input_uid, input_message) {
@@ -93,7 +99,7 @@ export async function ReadMessage(input_message_key, input_uid) {
 }
 export async function getmyinfo(input_info_key, input_uid) {
   return new Promise((resolve) => {
-    const dbRef = ref(db, input_info_key+"/" + input_uid);
+    const dbRef = ref(db, input_info_key + "/" + input_uid + "/info");
     get(dbRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -101,9 +107,7 @@ export async function getmyinfo(input_info_key, input_uid) {
           let arr = dataStr.split(",").map((item) => item.trim()); // Split and trim
 
           if (arr.length === 3) {
-      
-
-          //  alert(firstName + " " + lastName + " " + email);
+            //  alert(firstName + " " + lastName + " " + email);
             resolve(dataStr);
           } else {
             resolve(null);
@@ -129,8 +133,8 @@ export function AddInfo(
   email_input,
   input_uid
 ) {
-  set(ref(db, input_info_key), {
-    [input_uid]: fname_input + "," + lname_input + "," + email_input,
+  set(ref(db, input_info_key + "/" + input_uid), {
+    info: fname_input + "," + lname_input + "," + email_input,
   })
     .then(() => {
       alert("Info added successfully!");
@@ -139,4 +143,54 @@ export function AddInfo(
       alert("Unsuccessful!");
       console.log(error);
     });
+}
+/*
+export async function findUidByEmail(targetEmail) {
+  return new Promise((resolve) => {
+    const dbRef = ref(db, INFO_KEY);
+    get(dbRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const usersData = snapshot.val();
+
+          for (const [uid, data] of Object.entries(usersData)) {
+            const infoArray = data.info.split(","); // Convert string to array
+            const email = infoArray[2]; // Extract email
+
+            if (email === targetEmail) {
+              alert(`Found UID: ${uid} for email: ${targetEmail}`);
+              //  console.log(`Found UID: ${uid} for email: ${targetEmail}`);
+              resolve(uid); // Return the matching UID
+            }
+          }
+        } else {
+          resolve(null);
+          console.log("No data found for this user.");
+        }
+      })
+      .catch((error) => {
+        resolve(null);
+        console.error("Error fetching data:", error);
+      });
+  });
+}
+*/
+export async function GetInfoData(info_key) {
+  return new Promise((resolve) => {
+    const dbRef = ref(db, info_key);
+    get(dbRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const usersData = snapshot.val();
+          resolve(usersData);
+        } else {
+          resolve(null);
+        //  console.log("No data found for this user.");
+        }
+      })
+      .catch((error) => {
+        resolve(null);
+      //  console.error("Error fetching data:", error);
+      });
+  });
 }

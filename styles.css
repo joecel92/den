@@ -101,7 +101,7 @@ footer {
     height: 150px;
     border-radius: 50%;
     margin-right: 50px; /* Adds space between image and text */
-    animation: glow-image 1s ease-in-out infinite alternate;
+
 }
 .header-text {
     display: flex;
@@ -117,7 +117,7 @@ footer {
     font-size: 30pt;
     color: #fff;
     text-align: center;
-    animation: glow 1s ease-in-out infinite alternate;
+
 }
 .about-me{
     font-size: 20pt;
@@ -279,27 +279,35 @@ footer {
 }
 
 
-.message_form{
-    color: rgb(255, 255, 255);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 500px;
-    padding: 50px 20px 50px 20px;
-    background: #2c0101;
-    border-radius: 50px;
-    box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
+.message_form {
+    position: relative; /* Ensure the button is positioned within this container */
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 400px; /* Adjust width as needed */
+    margin: auto;
+    background: #52082bce;
 }
 
-.message_form button,input{
-font-size: 18pt;
+#closechatbtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgb(216, 83, 83);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16pt;
 }
 
-#closechatbtn{
-    width: min-content;
-}
+#closechatbtn:hover {
+    background-color: rgb(179, 10, 10);
 
+}
+#sendMsgBtn{
+    font-size: 16pt;
+}
 #message_box {
     width: 100%;
     height: 400px; /* Adjust as needed */
@@ -323,5 +331,10 @@ width: 100%;
 
 #inputmsg{
     width: 100%;
+    font-size: 18pt;
     }
     
+#emailDropdown{
+
+    font-size: 18pt;
+}

@@ -1,4 +1,10 @@
-import { AddInfo, getmyinfo, PushMessage, ReadMessage } from "./firebase_db.js";
+import {
+  AddInfo,
+  getmyinfo,
+  PushMessage,
+  ReadMessage,
+  GetInfoData,
+} from "./firebase_db.js";
 import {
   signin_firebase,
   signout_firebase,
@@ -6,16 +12,25 @@ import {
 } from "./firebase_auth.js";
 import { MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
 
-let account_uid = "";
+export let account_uid = "";
+export let selected_uid="";
 let myfirstname = "";
 
-function loadPage(page, reload_data) {
+function loadPage(page) {
   fetch(page)
     .then((response) => response.text())
     .then((data) => {
       document.getElementById("displ").innerHTML = data;
-      if (reload_data === true) {
+      if (page === "chat.html") {
         reload_messages();
+        document.getElementById("emailDropdown").addEventListener("change", function() {
+          let selectedOption = this.options[this.selectedIndex];
+          if(selectedOption.value!=null){
+            selected_uid=selectedOption.value;
+            get_messages(MESSAGES_KEY,selected_uid);
+          }
+         
+        });
       }
     })
     .catch((error) => console.error("Error loading page:", error));
@@ -100,19 +115,17 @@ function check_credential_signin(input_email, input_password) {
   return true;
 }
 
-export function reload_messages() {
-  get_data(MESSAGES_KEY, account_uid);
-}
+
 
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
-    loadPage("signin.html", false);
+    loadPage("signin.html");
     document.getElementById("displ").style.display = "flex";
   } else if (event.target && event.target.id === "closeSignin") {
     document.getElementById("displ").style.display = "none";
   } else if (event.target && event.target.id === "openSignup") {
-    loadPage("signup.html", false);
+    loadPage("signup.html");
     document.getElementById("displ").style.display = "flex";
   } else if (event.target && event.target.id === "closeSignup") {
     document.getElementById("displ").style.display = "none";
@@ -125,9 +138,11 @@ document.addEventListener("click", function (event) {
         .then((USER_ID) => {
           if (USER_ID) {
             account_uid = USER_ID;
-            loadPage("chat.html", true);
-
-            get_name(INFO_KEY, account_uid);
+            loadPage("chat.html");
+            DownLoadInfoData();
+            get_my_info(INFO_KEY, account_uid);
+            selected_uid=account_uid;
+            // get_name(INFO_KEY, account_uid);
             // alert(myname);
             //alert("Welcome");
 
@@ -174,27 +189,39 @@ document.addEventListener("click", function (event) {
     let msg = document.getElementById("inputmsg").value;
     // alert(account_uid);
     msg = myfirstname + ": " + msg;
-    PushMessage(MESSAGES_KEY, account_uid, msg);
+    PushMessage(MESSAGES_KEY, selected_uid, msg);
     document.getElementById("inputmsg").value = "";
   } else if (event.target && event.target.id === "closechatbtn") {
     SignOut_FireBase()
-    .then((RESULTS) => {
-      if (RESULTS!=null) {
-        alert(RESULTS+' '+myfirstname+" Come again!");
-        document.getElementById("displ").style.display = "none";
-      } else {
-        alert("failed signout");
-      }
-    })
-    .catch((error) => {
-      console.error("Sign-in error:", error);
-    });
-
+      .then((RESULTS) => {
+        if (RESULTS != null) {
+          alert(RESULTS + " " + myfirstname + " Come again!");
+          document.getElementById("displ").style.display = "none";
+        } else {
+          alert("failed signout");
+        }
+      })
+      .catch((error) => {
+        console.error("Sign-in error:", error);
+      });
   } else if (event.target && event.target.id === "readmsgbtn") {
     get_data(MESSAGES_KEY, account_uid);
+  } else if (event.target && event.target.id === "search_email_uid_btn") {
+    let signin_email = document.getElementById("signin_email").value;
+    search_uid_by_email(signin_email)
+      .then((RESULTS) => {
+        if (RESULTS) {
+          alert(RESULTS);
+        } else {
+          alert("Failed to get data!");
+        }
+      })
+      .catch((error) => {
+        console.error("Sign-in error:", error);
+      });
   }
 });
-
+/*
 function get_name(input_key, input_uid) {
   get_my_info(input_key, input_uid)
     .then((RESULTS) => {
@@ -214,10 +241,12 @@ function get_name(input_key, input_uid) {
     });
 }
 
-function get_data(input_key, input_uid) {
+  */
+/*
+ function reload_my_msgbox(input_key, input_uid) {
   get_messages(input_key, input_uid)
     .then((RESULTS) => {
-      if (RESULTS) {
+      if (RESULTS != null) {
         document.getElementById("message_box").value = RESULTS;
       } else {
         alert("Failed to get data!");
@@ -227,22 +256,30 @@ function get_data(input_key, input_uid) {
       console.error("Sign-in error:", error);
     });
 }
-
-async function get_messages(input_message_key, input_uid) {
+*/
+export function reload_messages() {
+  //reload_my_msgbox(MESSAGES_KEY, account_uid);
+  get_messages(MESSAGES_KEY,account_uid);
+}
+export async function get_messages(input_message_key, input_uid) {
   const success = await ReadMessage(input_message_key, input_uid);
   if (success != null) {
-    return success;
+    document.getElementById("message_box").value = success;
   } else {
-    return null;
+    //return null;
   }
 }
 
 async function get_my_info(input_info_key, input_uid) {
   const success = await getmyinfo(input_info_key, input_uid);
   if (success != null) {
-    return success;
-  } else {
-    return null;
+    // return success;
+    let dataStr = success;
+    let arr = dataStr.split(",").map((item) => item.trim());
+    if (arr.length === 3) {
+      myfirstname = arr[0];
+      alert("Welcome " + arr[0] + " " + arr[1]);
+    }
   }
 }
 
@@ -254,9 +291,30 @@ async function SignOut_FireBase() {
     return null;
   }
 }
-
-function signout_account() {
-  let res="";
-
-    
+/*
+async function search_uid_by_email(input_email) {
+  const success = await findUidByEmail(input_email);
+  if (success != null) {
+    return success;
+  } else {
+    return null;
+  }
+}
+*/
+async function DownLoadInfoData() {
+  const success = await GetInfoData(INFO_KEY);
+  if (success != null) {
+    const usersData = success;
+    addItem("Select contacts", null);
+    for (const [uid, data] of Object.entries(usersData)) {
+      const infoArray = data.info.split(","); // Convert string to array
+      const email = infoArray[2]; // Extract email
+      addItem(email, uid);
+    }
+  }
+}
+function addItem(txt, val) {
+  let select = document.getElementById("emailDropdown");
+  let option = new Option(txt, val);
+  select.add(option);
 }
