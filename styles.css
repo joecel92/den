@@ -26,6 +26,11 @@ header {
     width: 300px;
     box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
     background: #aa9b9b;
+    cursor: pointer;
+}
+.project:hover{
+
+    transform: scale(1.1);
 }
 footer {
     background: #000000;
@@ -162,13 +167,13 @@ footer {
   }
   @keyframes glow-image {
     0% {
-        box-shadow: 0 0 10px #e60073;
+        box-shadow: 0 0 10px #f1eff0;
     }
     50% {
-        box-shadow: 0 0 30px #e60073;
+        box-shadow: 0 0 30px #f5f4f4;
     }
     100% {
-        box-shadow: 0 0 10px #e60073;
+        box-shadow: 0 0 10px #f7f4f5;
     }
 }
 
