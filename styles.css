@@ -250,9 +250,9 @@ footer {
     flex-direction: column;
     width: 300px;
    padding: 50px 20px 50px 20px;
-   background: #490101;
+   background: #830343;
     border-radius: 50px;
-    box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
+    box-shadow: 10px 10px 5px rgba(17, 14, 13, 0.575);
 }
 .signin_form button,input{
     font-size: large;
@@ -278,18 +278,34 @@ footer {
     box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
 }
 
-
-.message_form {
-    position: relative; /* Ensure the button is positioned within this container */
-    padding: 20px;
+#messagesContainer{
+    width: 95%; /* Set a width if needed */
+    height: 80%; /* Fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
     border: 1px solid #ccc;
-    width: 400px; /* Adjust width as needed */
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+#messagesContainer button,p{
+font-size: 18pt;
+}
+#message_header{
+    color: #eeeaea;
+}
+.message_form {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 30%; /* Adjust width as needed */
     margin: auto;
-    background: #52082bce;
+    background: #52082bf8;
+    height: 80%;
 }
 
 #closechatbtn {
-    position: absolute;
+
     top: 10px;
     right: 10px;
     background-color: rgb(216, 83, 83);
@@ -308,16 +324,7 @@ footer {
 #sendMsgBtn{
     font-size: 16pt;
 }
-#message_box {
-    width: 100%;
-    height: 400px; /* Adjust as needed */
-    resize: vertical; /* Allow resizing */
-    word-wrap: break-word; /* Ensures words wrap */
-    overflow-wrap: break-word; /* Ensures long words break properly */
-    white-space: pre-wrap; /* Keeps line breaks */
-    box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
-    font-size: 18pt;
-}
+
 #openForm {
 font-size: 12pt;
 animation: glow-image 1s ease-in-out infinite alternate;

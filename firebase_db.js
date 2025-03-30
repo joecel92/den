@@ -1,6 +1,6 @@
 import { firebaseConfig, MESSAGES_KEY } from "./firebase_config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-import { selected_uid,get_messages } from "./main.js";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,7 +16,9 @@ import {
   push,
   set,
   onValue,
+  remove
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+import { selected_uid,get_messages_raw } from "./main.js";
 
 const db = getDatabase(app);
 
@@ -26,17 +28,25 @@ const clientsRef = ref(db, MESSAGES_KEY);
 onValue(clientsRef, (snapshot) => {
 
   if(snapshot.exists()){
-  get_messages(MESSAGES_KEY,selected_uid);
-  
-    //if (data) {
-      
-   // }
+ get_messages_raw(MESSAGES_KEY,selected_uid);
   }
-  
-   
      // document.getElementById("message_box").value = messageText;
   
 });
+
+ export function deleteMessage(msg_key,input_uid){
+  return new Promise((resolve) => {
+  remove(ref(db,MESSAGES_KEY+'/'+input_uid+'/'+msg_key))
+  .then(()=>{
+
+    resolve(true);
+  })
+  .catch((error)=>{
+    resolve(false);
+  })
+});
+  }
+ 
 
 export function PushMessage(input_message_key, input_uid, input_message) {
   const clientsRef = ref(db, input_message_key + "/" + input_uid);
@@ -46,10 +56,12 @@ export function PushMessage(input_message_key, input_uid, input_message) {
       //document.getElementById("inputmsg").value="";
       // console.log("Single value pushed with a random key!");
       //return true;
+     // alert("sent");
     })
     .catch((error) => {
       console.error("Error:", error);
       //return false;
+      alert("send failed!");
     });
 }
 export function get_info(input_info_key, input_uid) {
@@ -73,6 +85,8 @@ export function get_info(input_info_key, input_uid) {
     }
   });
 }
+/*
+
 export async function ReadMessage(input_message_key, input_uid) {
   return new Promise((resolve) => {
     const dbref = ref(db);
@@ -97,6 +111,29 @@ export async function ReadMessage(input_message_key, input_uid) {
   });
   //return messageText;
 }
+*/
+export async function ReadMessageRaw(input_message_key, input_uid) {
+  return new Promise((resolve) => {
+    const dbref = ref(db);
+    get(child(dbref, input_message_key + "/" + input_uid)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data) {
+          resolve(data);
+        } else {
+          resolve(null);
+        }
+
+        // Set the value inside the <textarea>
+      } else {
+        resolve(null);
+      }
+    });
+  });
+  //return messageText;
+}
+
+
 export async function getmyinfo(input_info_key, input_uid) {
   return new Promise((resolve) => {
     const dbRef = ref(db, input_info_key + "/" + input_uid + "/info");

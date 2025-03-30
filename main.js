@@ -2,38 +2,113 @@ import {
   AddInfo,
   getmyinfo,
   PushMessage,
-  ReadMessage,
+  ReadMessageRaw,
   GetInfoData,
+  deleteMessage
 } from "./firebase_db.js";
 import {
   signin_firebase,
   signout_firebase,
   signup_firebase,
 } from "./firebase_auth.js";
+import { set_header_txt } from "./chat.js";
 import { MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
+import { addItem } from "./chat.js";
+
 
 export let account_uid = "";
-export let selected_uid="";
+export let selected_uid = "";
 let myfirstname = "";
+export function reload_messages() {
+  //reload_my_msgbox(MESSAGES_KEY, account_uid);
+  //get_messages(MESSAGES_KEY, account_uid);
+  get_messages_raw(MESSAGES_KEY,account_uid);
+}
 
+
+export async function get_messages_raw(input_message_key, input_uid) {
+  const data = await ReadMessageRaw(input_message_key, input_uid);
+
+  let msgObj = [];
+  if (data != null) {
+    Object.keys(data).forEach((key) => {
+
+      msgObj.push({ id: key, text: data[key] }); // Store message ID and text
+    });
+    load_messages(msgObj);
+  }else{
+    load_messages(null);
+  }
+}
+
+window.DeleteMessage = async (messageId) => {
+  if(account_uid!=selected_uid){
+    alert("Not allowed!");
+  }else{
+    const success = await deleteMessage(messageId,account_uid);
+    if(success){
+      get_messages_raw(MESSAGES_KEY,account_uid);
+    }
+  }
+
+  //alert("Test 123");
+  
+  //loadMessages(); // Refresh messages after deletion
+};
+
+function load_messages(msgobj) {
+  const container = document.getElementById("messagesContainer");
+  container.innerHTML = ""; // Clear previous messages
+
+  let msgObj = [];
+  msgObj = msgobj;
+  if (msgobj != null) {
+    msgObj.forEach((msg) => {
+      const messageDiv = document.createElement("div");
+      messageDiv.innerHTML = `
+          <p>${msg.text} <button onclick="DeleteMessage('${msg.id}')">🗑️</button></p>
+        `;
+      container.appendChild(messageDiv);
+
+      //load_messages(msg.text,msg.id);
+    });
+  } else {
+    container.innerHTML = "";
+  }
+}
 function loadPage(page) {
   fetch(page)
     .then((response) => response.text())
     .then((data) => {
       document.getElementById("displ").innerHTML = data;
       if (page === "chat.html") {
+        DownLoadInfoData();
         reload_messages();
-        document.getElementById("emailDropdown").addEventListener("change", function() {
+        document
+        .getElementById("emailDropdown")
+        .addEventListener("change", function () {
           let selectedOption = this.options[this.selectedIndex];
-          if(selectedOption.value!=null){
-            selected_uid=selectedOption.value;
-            get_messages(MESSAGES_KEY,selected_uid);
+          if (selectedOption.value != null) {
+            selected_uid = selectedOption.value;
+            get_messages_raw(MESSAGES_KEY, selected_uid);
           }
-         
         });
       }
     })
     .catch((error) => console.error("Error loading page:", error));
+}
+
+ async function DownLoadInfoData() {
+  const success = await GetInfoData(INFO_KEY);
+  if (success != null) {
+    const usersData = success;
+    addItem("Select contacts", null);
+    for (const [uid, data] of Object.entries(usersData)) {
+      const infoArray = data.info.split(","); // Convert string to array
+      const email = infoArray[2]; // Extract email
+      addItem(email, uid);
+    }
+  }
 }
 
 async function signUpAndLoad(input_email, input_password) {
@@ -115,8 +190,6 @@ function check_credential_signin(input_email, input_password) {
   return true;
 }
 
-
-
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
@@ -139,16 +212,14 @@ document.addEventListener("click", function (event) {
           if (USER_ID) {
             account_uid = USER_ID;
             loadPage("chat.html");
-            DownLoadInfoData();
+            // DownLoadInfoData();
             get_my_info(INFO_KEY, account_uid);
-            selected_uid=account_uid;
+            selected_uid = account_uid;
             // get_name(INFO_KEY, account_uid);
             // alert(myname);
             //alert("Welcome");
 
             // ReadMessage(MESSAGES_KEY, account_uid);
-          } else {
-            alert("Sign-in failed.");
           }
         })
         .catch((error) => {
@@ -257,18 +328,6 @@ function get_name(input_key, input_uid) {
     });
 }
 */
-export function reload_messages() {
-  //reload_my_msgbox(MESSAGES_KEY, account_uid);
-  get_messages(MESSAGES_KEY,account_uid);
-}
-export async function get_messages(input_message_key, input_uid) {
-  const success = await ReadMessage(input_message_key, input_uid);
-  if (success != null) {
-    document.getElementById("message_box").value = success;
-  } else {
-    //return null;
-  }
-}
 
 async function get_my_info(input_info_key, input_uid) {
   const success = await getmyinfo(input_info_key, input_uid);
@@ -278,7 +337,8 @@ async function get_my_info(input_info_key, input_uid) {
     let arr = dataStr.split(",").map((item) => item.trim());
     if (arr.length === 3) {
       myfirstname = arr[0];
-      alert("Welcome " + arr[0] + " " + arr[1]);
+    //  alert("Welcome " + arr[0] + " " + arr[1]);
+    set_header_txt('Welcome '+ arr[0]+' '+arr[1]);
     }
   }
 }
@@ -291,7 +351,7 @@ async function SignOut_FireBase() {
     return null;
   }
 }
-/*
+
 async function search_uid_by_email(input_email) {
   const success = await findUidByEmail(input_email);
   if (success != null) {
@@ -299,22 +359,4 @@ async function search_uid_by_email(input_email) {
   } else {
     return null;
   }
-}
-*/
-async function DownLoadInfoData() {
-  const success = await GetInfoData(INFO_KEY);
-  if (success != null) {
-    const usersData = success;
-    addItem("Select contacts", null);
-    for (const [uid, data] of Object.entries(usersData)) {
-      const infoArray = data.info.split(","); // Convert string to array
-      const email = infoArray[2]; // Extract email
-      addItem(email, uid);
-    }
-  }
-}
-function addItem(txt, val) {
-  let select = document.getElementById("emailDropdown");
-  let option = new Option(txt, val);
-  select.add(option);
 }

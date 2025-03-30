@@ -28,9 +28,9 @@ export async function signin_firebase(input_email, input_password) {
       .catch((error) => {
         const errorCode = error.code;
         if (errorCode === "auth/invalid-credential") {
-         // alert("Incorrect email or password");
+         alert("Incorrect email or password");
         } else {
-         // alert("Account doesn't exist!");
+         alert("Account doesn't exist!");
         }
         resolve(null); // Failed to sign in
       });
@@ -43,7 +43,7 @@ export async function signup_firebase(input_email, input_password) {
       .then((userCredential) => {
         const user = userCredential.user;
         let user_id = user.uid;
-        alert(user_id);
+        //alert(user_id);
         resolve(user_id); // Failed to sign in
       })
       .catch((error) => {
