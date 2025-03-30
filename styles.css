@@ -225,7 +225,7 @@ footer {
 .overlay-right {
     right: 0;
     width: 20%;
-    background: rgba(99, 1, 10, 0.623);
+    background: linear-gradient(135deg, #830343, #ff6b81);
     transform: skew(-30deg);
 }
 
@@ -286,7 +286,7 @@ footer {
 
 #messagesContainer{
     width: 95%; /* Set a width if needed */
-    height: 80%; /* Fixed height */
+    height: 70%; /* Fixed height */
     overflow-y: auto; /* Enable vertical scrolling */
     border: 1px solid #ccc;
     padding: 10px;
@@ -297,6 +297,8 @@ font-size: 18pt;
 }
 #message_header{
     color: #eeeaea;
+    padding: 0;
+    margin: 0;
 }
 .message_form {
     display: flex;
@@ -306,14 +308,13 @@ font-size: 18pt;
     border: 1px solid #ccc;
     width: 30%; /* Adjust width as needed */
     margin: auto;
-    background: #52082bf8;
+    background: #aa9b9b;
     height: 80%;
+    cursor: grab;
+    position: absolute;
 }
 
 #closechatbtn {
-
-    top: 10px;
-    right: 10px;
     background-color: rgb(216, 83, 83);
     color: white;
     border: none;
@@ -321,12 +322,19 @@ font-size: 18pt;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16pt;
+    width: 200px;
 }
 
 #closechatbtn:hover {
     background-color: rgb(179, 10, 10);
-
 }
+.signout_btn_container{
+display:flex;
+justify-content: flex-end;
+
+width: 100%;
+}
+
 #sendMsgBtn{
     font-size: 16pt;
 }
@@ -350,4 +358,25 @@ width: 100%;
 #emailDropdown{
 
     font-size: 18pt;
+}
+.movable-div1 {
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    top: 60%;
+    left: 100px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    z-index: 1004;
+
+}
+
+.movable-div1 img {
+    width: 100%; /* Makes the GIF fit inside */
+    height: 100%;
+    border-radius: 10px;
+    pointer-events: none;
 }

@@ -4,7 +4,7 @@ import {
   PushMessage,
   ReadMessageRaw,
   GetInfoData,
-  deleteMessage
+  deleteMessage,
 } from "./firebase_db.js";
 import {
   signin_firebase,
@@ -15,16 +15,14 @@ import { set_header_txt } from "./chat.js";
 import { MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
 import { addItem } from "./chat.js";
 
-
 export let account_uid = "";
 export let selected_uid = "";
 let myfirstname = "";
 export function reload_messages() {
   //reload_my_msgbox(MESSAGES_KEY, account_uid);
   //get_messages(MESSAGES_KEY, account_uid);
-  get_messages_raw(MESSAGES_KEY,account_uid);
+  get_messages_raw(MESSAGES_KEY, account_uid);
 }
-
 
 export async function get_messages_raw(input_message_key, input_uid) {
   const data = await ReadMessageRaw(input_message_key, input_uid);
@@ -32,27 +30,26 @@ export async function get_messages_raw(input_message_key, input_uid) {
   let msgObj = [];
   if (data != null) {
     Object.keys(data).forEach((key) => {
-
       msgObj.push({ id: key, text: data[key] }); // Store message ID and text
     });
     load_messages(msgObj);
-  }else{
+  } else {
     load_messages(null);
   }
 }
 
 window.DeleteMessage = async (messageId) => {
-  if(account_uid!=selected_uid){
+  if (account_uid != selected_uid) {
     alert("Not allowed!");
-  }else{
-    const success = await deleteMessage(messageId,account_uid);
-    if(success){
-      get_messages_raw(MESSAGES_KEY,account_uid);
+  } else {
+    const success = await deleteMessage(messageId, account_uid);
+    if (success) {
+      get_messages_raw(MESSAGES_KEY, account_uid);
     }
   }
 
   //alert("Test 123");
-  
+
   //loadMessages(); // Refresh messages after deletion
 };
 
@@ -85,20 +82,83 @@ function loadPage(page) {
         DownLoadInfoData();
         reload_messages();
         document
-        .getElementById("emailDropdown")
-        .addEventListener("change", function () {
-          let selectedOption = this.options[this.selectedIndex];
-          if (selectedOption.value != null) {
-            selected_uid = selectedOption.value;
-            get_messages_raw(MESSAGES_KEY, selected_uid);
+          .getElementById("emailDropdown")
+          .addEventListener("change", function () {
+            let selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value != null) {
+              selected_uid = selectedOption.value;
+              get_messages_raw(MESSAGES_KEY, selected_uid);
+            }
+          });
+
+        const draggable = document.getElementById("draggable");
+        let offsetX,
+          offsetY,
+          isDragging = false;
+
+        draggable.addEventListener("mousedown", (e) => {
+          isDragging = true;
+          offsetX = e.clientX - draggable.offsetLeft;
+          offsetY = e.clientY - draggable.offsetTop;
+          draggable.style.cursor = "grabbing";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+          if (isDragging) {
+            draggable.style.left = e.clientX - offsetX + "px";
+            draggable.style.top = e.clientY - offsetY + "px";
           }
         });
+
+        document.addEventListener("mouseup", () => {
+          isDragging = false;
+          draggable.style.cursor = "grab";
+        });
+
+        const inputField = document.getElementById("inputmsg");
+        inputField.addEventListener("keydown", function(event) {
+          if (event.key === "Enter" && inputField.value.trim() !== "") {
+              let msg = inputField.value;
+      
+              // alert(account_uid);
+              msg = myfirstname + ": " + msg;
+              PushMessage(MESSAGES_KEY, selected_uid, msg);
+              inputField.value = ""; // Clear input field after sending
+          }
+        });
+
+
+
       }
     })
     .catch((error) => console.error("Error loading page:", error));
 }
 
- async function DownLoadInfoData() {
+const draggable1 = document.getElementById("draggable1");
+let offsetX1,
+  offsetY1,
+  isDragging1 = false;
+
+draggable1.addEventListener("mousedown", (e) => {
+  isDragging1 = true;
+  offsetX1 = e.clientX - draggable1.offsetLeft;
+  offsetY1 = e.clientY - draggable1.offsetTop;
+  draggable1.style.cursor = "grabbing";
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (isDragging1) {
+    draggable1.style.left = e.clientX - offsetX1 + "px";
+    draggable1.style.top = e.clientY - offsetY1 + "px";
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging1 = false;
+  draggable1.style.cursor = "grab";
+});
+
+async function DownLoadInfoData() {
   const success = await GetInfoData(INFO_KEY);
   if (success != null) {
     const usersData = success;
@@ -189,6 +249,8 @@ function check_credential_signin(input_email, input_password) {
   }
   return true;
 }
+
+
 
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
@@ -337,8 +399,8 @@ async function get_my_info(input_info_key, input_uid) {
     let arr = dataStr.split(",").map((item) => item.trim());
     if (arr.length === 3) {
       myfirstname = arr[0];
-    //  alert("Welcome " + arr[0] + " " + arr[1]);
-    set_header_txt('Welcome '+ arr[0]+' '+arr[1]);
+      //  alert("Welcome " + arr[0] + " " + arr[1]);
+      set_header_txt("Welcome " + arr[0] + " " + arr[1]);
     }
   }
 }
