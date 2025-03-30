@@ -116,19 +116,23 @@ function loadPage(page) {
         });
 
         const inputField = document.getElementById("inputmsg");
-        inputField.addEventListener("keydown", function(event) {
+        inputField.addEventListener("keydown", function (event) {
           if (event.key === "Enter" && inputField.value.trim() !== "") {
-              let msg = inputField.value;
-      
-              // alert(account_uid);
-              msg = myfirstname + ": " + msg;
-              PushMessage(MESSAGES_KEY, selected_uid, msg);
-              inputField.value = ""; // Clear input field after sending
+            let msg = inputField.value;
+
+            // alert(account_uid);
+            msg = myfirstname + ": " + msg;
+            PushMessage(MESSAGES_KEY, selected_uid, msg);
+            inputField.value = ""; // Clear input field after sending
           }
         });
-
-
-
+      } else if (page === "signin.html") {
+        const inputField1 = document.getElementById("signin_password");
+        inputField1.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" && inputField1.value.trim() !== "") {
+            SignInAccount();
+          }
+        });
       }
     })
     .catch((error) => console.error("Error loading page:", error));
@@ -250,7 +254,31 @@ function check_credential_signin(input_email, input_password) {
   return true;
 }
 
+function SignInAccount() {
+  let signin_email = document.getElementById("signin_email").value;
+  let signin_password = document.getElementById("signin_password").value;
 
+  if (check_credential_signin(signin_email, signin_password)) {
+    signInAndLoad(signin_email, signin_password)
+      .then((USER_ID) => {
+        if (USER_ID) {
+          account_uid = USER_ID;
+          loadPage("chat.html");
+          // DownLoadInfoData();
+          get_my_info(INFO_KEY, account_uid);
+          selected_uid = account_uid;
+          // get_name(INFO_KEY, account_uid);
+          // alert(myname);
+          //alert("Welcome");
+
+          // ReadMessage(MESSAGES_KEY, account_uid);
+        }
+      })
+      .catch((error) => {
+        console.error("Sign-in error:", error);
+      });
+  }
+}
 
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
@@ -265,29 +293,7 @@ document.addEventListener("click", function (event) {
   } else if (event.target && event.target.id === "closeSignup") {
     document.getElementById("displ").style.display = "none";
   } else if (event.target && event.target.id === "signinbtn") {
-    let signin_email = document.getElementById("signin_email").value;
-    let signin_password = document.getElementById("signin_password").value;
-
-    if (check_credential_signin(signin_email, signin_password)) {
-      signInAndLoad(signin_email, signin_password)
-        .then((USER_ID) => {
-          if (USER_ID) {
-            account_uid = USER_ID;
-            loadPage("chat.html");
-            // DownLoadInfoData();
-            get_my_info(INFO_KEY, account_uid);
-            selected_uid = account_uid;
-            // get_name(INFO_KEY, account_uid);
-            // alert(myname);
-            //alert("Welcome");
-
-            // ReadMessage(MESSAGES_KEY, account_uid);
-          }
-        })
-        .catch((error) => {
-          console.error("Sign-in error:", error);
-        });
-    }
+    SignInAccount();
   } else if (event.target && event.target.id === "signupbtn") {
     let myfname = document.getElementById("RFname").value;
     let mylname = document.getElementById("RLname").value;
