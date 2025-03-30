@@ -3,15 +3,12 @@ body {
     padding: 0;
     background: #f1ecec;
 
+
 }
 body button:hover{
     cursor:pointer;
 }
-header {
-    background: linear-gradient(135deg, #830343, #ff6b81);
-    color: white;
-    padding: 20px;
-}
+
 
 .projects {
     display: flex;
@@ -32,14 +29,7 @@ header {
 
     transform: scale(1.1);
 }
-footer {
-    background: #000000;
-    color: white;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
+
 
 a {
     color: #1877F2; /* Facebook blue */
@@ -67,73 +57,108 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-header, footer {
-    display: flex;
-    text-align: center;
-
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-header {
-    top: 0;
-    justify-content: center;
-
-}
 
 footer {
+    background: #000000;
+    color: white;
+    width: 100%;
     bottom: 0;
+    display: flex;
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+}
 
+
+.overlay-left {
+    left: 0;
+    width: 28%;
+    background: #f1ecec;
+    transform: skew(-30deg);
+}
+.overlay-left-a {
+    left: 0;
+    width: 10%;
+    background: #f1ecec;
+
+}
+.overlay-right {
+    right: 0;
+    width: 20%;
+    background: linear-gradient(135deg, #830343, #ff6b81);
+    transform: skew(-30deg);
 }
 
 .main-content {
     position: absolute;
-    top: 80px; /* Adjust based on header height */
-    bottom: 50px; /* Adjust based on footer height */
     left: 0;
     right: 0;
     overflow-y: auto;
-    padding: 50px;
+    height: 100vh;
 }
 .header-container {
+    height: 20%;
+    width: 100%;
+    position: fixed;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px;
+    justify-content: center;
+    z-index: 1000;
+   background: linear-gradient(135deg, #830343, #ff6b81);
 }
 .profile-pic {
-    width: 150px; /* Adjust size as needed */
-    height: 150px;
+    width: auto; /* Adjust size as needed */
+    height: 80%;
     border-radius: 50%;
-    margin-right: 50px; /* Adds space between image and text */
-
+    padding: 10px;
 }
 .header-text {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
     align-items: flex-end;
-    margin-right: 20px;
+    height: 100%;
+ 
 }
-.header-text h1 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-right: 20px;
-    font-size: 30pt;
-    color: #fff;
-    text-align: center;
+.header-text p{
+padding: 0;
+color: #ddd;
+margin: 0;
+}
+#header_name_text{
+    font-size: 5vh;
+   font-weight: bold;
+}
+#header_prof_text{
+    font-size: 4vh;
+}
 
-}
+#openForm {
+    font-size: 3vh;
+    animation: glow-image 1s ease-in-out infinite alternate;
+    margin-bottom: 1%;
+    }
+
 .about-me{
-    font-size: 20pt;
+    margin-top: 10%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    padding-top: 100px;
     width: 100%;
 
+}
+#about-me-title{
+    font-weight: bold;
+}
+.about-me p{
+    padding: 0;
+    margin: 0;
 }
 .project-title{
     display: flex;
@@ -145,17 +170,20 @@ footer {
     padding: 0;
     font-size: 20pt;
 }
-
+#contact-title{
+    font-weight: bold;
+}
 .contact-layout{
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin: 0;
-    padding: 0;
-
+   margin-bottom: 5%;
 }
-  
+.contact-layout p{
+    padding: 0;
+    margin: 0;
+}
   @-webkit-keyframes glow {
     from {
       text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
@@ -184,7 +212,6 @@ footer {
     overflow: hidden;
     white-space: nowrap;
     background: #000000;
-    padding: 10px 0;
     position: relative;
     animation: scrollText 10s linear infinite;
    
@@ -192,7 +219,7 @@ footer {
 
 .scrolling-text {
    
-    font-size: 24px;
+    font-size: 3vh;
     color: white;
    
 }
@@ -205,34 +232,9 @@ footer {
         transform: translateX(100%);
     }
 }
-.overlay {
-    position: absolute;
-    top: 0;
-
-    height: 100%;
-   
-    z-index: 2;
-}
 
 /* Position Left and Right Overlays */
-.overlay-left {
-    left: 0;
-    width: 28%;
-    background: #f1ecec;
-    transform: skew(-30deg);
-}
-.overlay-left-a {
-    left: 0;
-    width: 10%;
-    background: #f1ecec;
 
-}
-.overlay-right {
-    right: 0;
-    width: 20%;
-    background: linear-gradient(135deg, #830343, #ff6b81);
-    transform: skew(-30deg);
-}
 
 
 .disp{
@@ -244,6 +246,7 @@ footer {
     display: none;
     justify-content: center;
     align-items: center;
+    background: #00000085;
   /*  background: rgba(0, 0, 0, 0.164); /* Optional: semi-transparent background */
     z-index: 9999; /* Ensures it is above everything */
 }
@@ -344,10 +347,7 @@ width: 100%;
     font-size: 16pt;
 }
 
-#openForm {
-font-size: 14pt;
-animation: glow-image 1s ease-in-out infinite alternate;
-}
+
 
 .type_msg_box{
 display: flex;
@@ -365,11 +365,11 @@ width: 100%;
     font-size: 18pt;
 }
 .movable-div1 {
-    width: 200px;
-    height: 300px;
+    width: auto;
+    height: 20%;
     position: absolute;
-    top: 60%;
-    left: 100px;
+    top: 2%;
+    left: 2%;
     cursor: grab;
     display: flex;
     align-items: center;
@@ -382,6 +382,5 @@ width: 100%;
 .movable-div1 img {
     width: 100%; /* Makes the GIF fit inside */
     height: 100%;
-    border-radius: 10px;
     pointer-events: none;
 }
