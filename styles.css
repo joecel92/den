@@ -146,11 +146,10 @@ take note  below side bar
  
 }
 #toggleBtn{
-    height: 100px;
-    width: 70px;
+    background: transparent;
     margin-left: 5px;
-    background: linear-gradient(135deg, #830343, #ff6b81);
-    font-size: 15pt;
+    font-size: 32pt;
+    border: transparent;
 }
 .header-text p{
 
