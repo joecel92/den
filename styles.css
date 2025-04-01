@@ -3,7 +3,12 @@ body button:hover{
     cursor:pointer;
 
 }
+html, body {
 
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
 
 .projects {
     display: flex;
@@ -11,6 +16,7 @@ body button:hover{
     padding: 0;
     flex-direction: row;
     width: 100%;
+
 }
 
 
@@ -19,7 +25,27 @@ body button:hover{
     right: 0;
     overflow-y: auto;
     height: 100vh;
-    background: #f1ecec;
+    position: relative;
+    background: #ccc;
+}
+.about-me{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+}
+#about-me-title{
+    font-size: 40pt;
+    font-family: 'Corinthia';
+    font-weight: bold;
+    color: #000000;
+
+}
+.about-me p{
+    padding: 0;
+    margin: 0;
 }
 @media screen and (max-width: 800px) {
     .projects {
@@ -28,13 +54,15 @@ body button:hover{
     }
 }
 .project {
+ 
     margin: 10px;
     padding: 20px;
     border: 1px solid #ddd;
     width: 300px;
     box-shadow: 10px 10px 5px rgba(2, 2, 2, 0.575);
-    background: #aa9b9b;
+    background: #a08989;
     cursor: pointer;
+ 
 }
 .project:hover{
 
@@ -60,13 +88,7 @@ a:hover {
 .fa-facebook:hover {
     text-shadow: 0 0 20px #1877F2;
 }
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; /* Prevent full-page scrolling */
- 
-}
+
 
 
 footer {
@@ -105,7 +127,17 @@ footer {
     transform: skew(-30deg);
 }
 
-
+.torch {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference; /* Removes the dark overlay in this area */
+    z-index: 1011;
+}
 
 /*
 take note  .sidebar first before .sidebar_open
@@ -120,7 +152,6 @@ take note  .sidebar first before .sidebar_open
     z-index: 1009;
     transition: 0.3s ease-in-out;
     align-items: center;
-
 }
 /*
 take note  below side bar
@@ -130,8 +161,8 @@ take note  below side bar
 }
 
 .profile-pic {
-    width: 200px; /* Adjust size as needed */
-    height: 200px;
+    width: 150px; /* Adjust size as needed */
+    height: 150px;
     border-radius: 50%;
     padding: 10px;
 }
@@ -139,10 +170,11 @@ take note  below side bar
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #830343;
+    background: linear-gradient(135deg, #830343, #ff6b81);
     padding: 0;
     margin: 0;
     height: 100vh;
+ 
  
 }
 #toggleBtn{
@@ -151,12 +183,13 @@ take note  below side bar
     font-size: 32pt;
     border: transparent;
 }
-.header-text p{
 
+.header-text p{
 padding: 0;
 color: #ddd;
-margin: 10;
+margin: 0;
 }
+
 #header_name_text{
     font-size: 20pt;
    font-weight: bold;
@@ -172,20 +205,7 @@ margin: 10;
     width: 150px;
     }
 
-.about-me{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-#about-me-title{
-    font-weight: bold;
-}
-.about-me p{
-    padding: 0;
-    margin: 0;
-}
+
 .project-title{
     display: flex;
     justify-content: center;
@@ -274,7 +294,7 @@ margin: 10;
     align-items: center;
     background: #00000085;
   /*  background: rgba(0, 0, 0, 0.164); /* Optional: semi-transparent background */
-    z-index: 9999; /* Ensures it is above everything */
+    z-index: 1008; /* Ensures it is above everything */
 }
 .signin_form {
     color: rgb(255, 255, 255);

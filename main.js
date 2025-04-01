@@ -309,6 +309,12 @@ function SignInAccount() {
   }
 }
 
+document.addEventListener("mousemove", function (e) {
+  const torch = document.querySelector(".torch");
+  torch.style.left = `${e.clientX}px`;
+  torch.style.top = `${e.clientY}px`;
+});
+
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
@@ -328,10 +334,10 @@ document.addEventListener("click", function (event) {
     const sidebar = document.getElementById("sidebar");
     if (sidebar.classList.contains("sidebar_open")) {
       sidebar.classList.remove("sidebar_open");
-      toggleBtn.innerHTML = "&#128073;";
+
     } else {
       sidebar.classList.add("sidebar_open");
-      toggleBtn.innerHTML = "&#128072;";
+
     }
   } else if (event.target && event.target.id === "signupbtn") {
     let myfname = document.getElementById("RFname").value;
