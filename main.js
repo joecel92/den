@@ -11,9 +11,8 @@ import {
   signout_firebase,
   signup_firebase,
 } from "./firebase_auth.js";
-import { set_header_txt } from "./chat.js";
 import { MESSAGES_KEY, INFO_KEY } from "./firebase_config.js";
-import { addItem } from "./chat.js";
+import { addItem,set_header_txt } from "./chat.js";
 
 export let account_uid = "";
 export let selected_uid = "";
