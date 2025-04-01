@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>&#128522Hello!&#128522</title>
     <link rel="icon" type="image/png" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script type="module" src="main.js"></script>
+  
 </head>
 <body>
     <div class="movable-div1" id="draggable1">
@@ -16,29 +17,36 @@
     <div class="disp" id="displ">
 <!-- display-->
     </div>
-        <div class="header-container">
-        
+        <div class="sidebar" id="sidebar">
+        <div class="content_container">
             <div class="header-text">
+                <img src="profile.jpg" alt="Your Name" class="profile-pic">
                 <p id="header_name_text">JOECEL B TANGDOL</p>
                 <p id="header_prof_text">Electronics Engineer | Programmer | IoT Specialist</p>
                 <button id="openForm" >&#128073 Talk to me</button>
             </div>
-            <img src="profile.jpg" alt="Your Name" class="profile-pic">
+      
+        </div>
+        <div class="button_container">
+           <button id="toggleBtn">
+            &#128073
+           </button>
+        </div>
+        
         </div>
 
     <div class="main-content">
-    <section>
+
         <div class="about-me">
             <p id="about-me-title">About Me</p>
             <p id="about-me-content">I specialize in IoT, automation, face recognition, Android app and web development.</p>
-      
         </div>
-    </section>
-    <section>
+
+
         <div class="project-title">
             <h2>Projects</h2>
         </div>
-    </section>
+
     <section class="projects">
         <div class="project">
             <h3>ESP32 Face Recognition</h3>
@@ -74,8 +82,6 @@
         </div>
 
     </section>
-
-
 </div>
     <footer>
         <div class="overlay overlay-left-a"></div>
@@ -89,6 +95,6 @@
         
  
     </footer>
-
+    <script type="module" src="main.js"></script>
 </body>
 </html>

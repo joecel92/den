@@ -53,6 +53,35 @@ window.DeleteMessage = async (messageId) => {
   //loadMessages(); // Refresh messages after deletion
 };
 
+document.addEventListener("DOMContentLoaded", function () {
+  load_messages([]);
+});
+
+function load_messages(msgobj) {
+  const container = document.getElementById("messagesContainer");
+
+  if (!container) {
+      console.error("Error: #messagesContainer element not found");
+      return;
+  }
+
+  container.innerHTML = ""; // Clear previous messages
+
+  if (msgobj && msgobj.length > 0) {
+      msgobj.forEach((msg) => {
+          const messageDiv = document.createElement("div");
+          messageDiv.innerHTML = `
+              <p>${msg.text} <button onclick="DeleteMessage('${msg.id}')">🗑️</button></p>
+          `;
+          container.appendChild(messageDiv);
+      });
+  } else {
+      container.innerHTML = "<p>No messages available.</p>";
+  }
+}
+
+
+/*
 function load_messages(msgobj) {
   const container = document.getElementById("messagesContainer");
   container.innerHTML = ""; // Clear previous messages
@@ -73,6 +102,7 @@ function load_messages(msgobj) {
     container.innerHTML = "";
   }
 }
+  */
 function loadPage(page) {
   fetch(page)
     .then((response) => response.text())
@@ -294,6 +324,16 @@ document.addEventListener("click", function (event) {
     document.getElementById("displ").style.display = "none";
   } else if (event.target && event.target.id === "signinbtn") {
     SignInAccount();
+  } else if (event.target && event.target.id === "toggleBtn") {
+    const toggleBtn = document.getElementById("toggleBtn");
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar.classList.contains("sidebar_open")) {
+      sidebar.classList.remove("sidebar_open");
+      toggleBtn.innerHTML = "&#128073;";
+    } else {
+      sidebar.classList.add("sidebar_open");
+      toggleBtn.innerHTML = "&#128072;";
+    }
   } else if (event.target && event.target.id === "signupbtn") {
     let myfname = document.getElementById("RFname").value;
     let mylname = document.getElementById("RLname").value;

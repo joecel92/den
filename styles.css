@@ -1,20 +1,31 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: #f1ecec;
 
-
-}
 body button:hover{
     cursor:pointer;
+
 }
 
 
 .projects {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     padding: 0;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+.main-content {
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    height: 100vh;
+    background: #f1ecec;
+}
+@media screen and (max-width: 800px) {
+    .projects {
+        flex-direction: column;  /* Change to Column */
+        align-items: center;
+    }
 }
 .project {
     margin: 10px;
@@ -54,13 +65,13 @@ html, body {
     padding: 0;
     height: 100%;
     overflow: hidden; /* Prevent full-page scrolling */
-    font-family: Arial, sans-serif;
+ 
 }
 
 
 footer {
     background: #000000;
-    color: white;
+    background: #f1ecec;
     width: 100%;
     bottom: 0;
     display: flex;
@@ -95,63 +106,80 @@ footer {
     transform: skew(-30deg);
 }
 
-.main-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-    overflow-y: auto;
+
+
+/*
+take note  .sidebar first before .sidebar_open
+*/
+.sidebar {
     height: 100vh;
-}
-.header-container {
-    height: 20%;
-    width: 100%;
+    width: 400px;
+    left: -320px;
     position: fixed;
     display: flex;
     justify-content: center;
-    z-index: 1000;
-   background: linear-gradient(135deg, #830343, #ff6b81);
+    z-index: 1009;
+    transition: 0.3s ease-in-out;
+    align-items: center;
+
 }
+/*
+take note  below side bar
+*/
+.sidebar_open {
+    left: 0; /* Slide in */
+}
+
 .profile-pic {
-    width: auto; /* Adjust size as needed */
-    height: 80%;
+    width: 200px; /* Adjust size as needed */
+    height: 200px;
     border-radius: 50%;
     padding: 10px;
 }
 .header-text {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
-    align-items: flex-end;
-    height: 100%;
+    align-items: center;
+    background: #830343;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
  
 }
+#toggleBtn{
+    height: 100px;
+    width: 70px;
+    margin-left: 5px;
+    background: linear-gradient(135deg, #830343, #ff6b81);
+    font-size: 15pt;
+}
 .header-text p{
+
 padding: 0;
 color: #ddd;
-margin: 0;
+margin: 10;
 }
 #header_name_text{
-    font-size: 5vh;
+    font-size: 20pt;
    font-weight: bold;
 }
 #header_prof_text{
-    font-size: 4vh;
+    font-size: 14pt;
 }
 
 #openForm {
-    font-size: 3vh;
+    font-size: 14pt;
     animation: glow-image 1s ease-in-out infinite alternate;
     margin-bottom: 1%;
+    width: 150px;
     }
 
 .about-me{
-    margin-top: 10%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     width: 100%;
-
 }
 #about-me-title{
     font-weight: bold;
@@ -165,10 +193,10 @@ margin: 0;
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding-top: 100px;
     margin: 0;
     padding: 0;
-    font-size: 20pt;
+    font-size: 15pt;
+    height: min-content;
 }
 #contact-title{
     font-weight: bold;
@@ -178,7 +206,7 @@ margin: 0;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-   margin-bottom: 5%;
+   margin-bottom: 10%;
 }
 .contact-layout p{
     padding: 0;
@@ -368,14 +396,14 @@ width: 100%;
     width: auto;
     height: 20%;
     position: absolute;
-    top: 2%;
+    top: 60%;
     left: 2%;
     cursor: grab;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    z-index: 1004;
+    z-index: 10010;
 
 }
 
