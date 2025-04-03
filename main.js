@@ -308,13 +308,21 @@ function SignInAccount() {
       });
   }
 }
+const torch = document.querySelector(".torch");
 
+function moveTorch(x, y) {
+    torch.style.left = `${x}px`;
+    torch.style.top = `${y}px`;
+}
 document.addEventListener("mousemove", function (e) {
   const torch = document.querySelector(".torch");
   torch.style.left = `${e.clientX}px`;
   torch.style.top = `${e.clientY}px`;
 });
-
+document.addEventListener("touchmove", function (e) {
+  const touch = e.touches[0]; // Get first touch point
+  moveTorch(touch.clientX, touch.clientY);
+});
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
