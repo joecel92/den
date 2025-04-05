@@ -18,17 +18,7 @@ html, body {
     width: 100%;
 }
 
-.torch {
-    position: fixed;
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, rgba(32, 26, 26, 0.233) 50%, rgba(255,255,255,0) 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 1012;
 
-}
 .main-content {
     left: 0;
     right: 0;
@@ -428,3 +418,38 @@ width: 100%;
     height: 100%;
     pointer-events: none;
 }
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 11000;
+  }
+  
+  #circle1 {
+    background: #ff3b38a9;
+  }
+  
+  #circle2 {
+    background: #ff8a42b0;
+  }
+  
+  #circle3 {
+    background: #fcd34da4;
+  }
+  #circle4 {
+    background: #1bcebfa8;
+  }
+  
+  #circle5 {
+    background: #be1fb6a2;
+  }
+  
+  #circle6 {
+    background: #07e6199a;
+  }
+  

@@ -308,12 +308,7 @@ function SignInAccount() {
       });
   }
 }
-const torch = document.querySelector(".torch");
 
-function moveTorch(x, y) {
-    torch.style.left = `${x}px`;
-    torch.style.top = `${y}px`;
-}
 document.addEventListener("mousemove", function (e) {
   const torch = document.querySelector(".torch");
   torch.style.left = `${e.clientX}px`;
@@ -323,6 +318,62 @@ document.addEventListener("touchmove", function (e) {
   const touch = e.touches[0]; // Get first touch point
   moveTorch(touch.clientX, touch.clientY);
 });
+
+const circle1 = document.getElementById('circle1');
+const circle2 = document.getElementById('circle2');
+const circle3 = document.getElementById('circle3');
+const circle4 = document.getElementById('circle4');
+const circle5 = document.getElementById('circle5');
+const circle6 = document.getElementById('circle6');
+
+// Initial positions
+let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+let pos1 = { x: mouse.x, y: mouse.y };
+let pos2 = { x: mouse.x, y: mouse.y };
+let pos3 = { x: mouse.x, y: mouse.y };
+let pos4 = { x: mouse.x, y: mouse.y };
+let pos5 = { x: mouse.x, y: mouse.y };
+let pos6 = { x: mouse.x, y: mouse.y };
+
+// Listen to mouse movement
+document.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+function lerp(start, end, factor) {
+  return start + (end - start) * factor;
+}
+
+function animate() {
+  // Smoothly interpolate positions
+  pos1.x = lerp(pos1.x, mouse.x, 0.1);
+  pos1.y = lerp(pos1.y, mouse.y, 0.1);
+  pos2.x = lerp(pos2.x, pos1.x, 0.1);
+  pos2.y = lerp(pos2.y, pos1.y, 0.1);
+  pos3.x = lerp(pos3.x, pos2.x, 0.1);
+  pos3.y = lerp(pos3.y, pos2.y, 0.1);
+  pos4.x = lerp(pos4.x, pos3.x, 0.1);
+  pos4.y = lerp(pos4.y, pos3.y, 0.1);
+  pos5.x = lerp(pos5.x, pos4.x, 0.1);
+  pos5.y = lerp(pos5.y, pos4.y, 0.1);
+  pos6.x = lerp(pos6.x, pos5.x, 0.1);
+  pos6.y = lerp(pos6.y, pos5.y, 0.1);
+
+  // Update element positions
+  circle1.style.transform = `translate(${pos1.x}px, ${pos1.y}px)`;
+  circle2.style.transform = `translate(${pos2.x}px, ${pos2.y}px)`;
+  circle3.style.transform = `translate(${pos3.x}px, ${pos3.y}px)`;
+  circle4.style.transform = `translate(${pos4.x}px, ${pos4.y}px)`;
+  circle5.style.transform = `translate(${pos5.x}px, ${pos5.y}px)`;
+  circle6.style.transform = `translate(${pos6.x}px, ${pos6.y}px)`;
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+
 document.addEventListener("click", function (event) {
   if (event.target && event.target.id === "openForm") {
     // alert("hello");
