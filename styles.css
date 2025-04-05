@@ -282,7 +282,7 @@ margin: 0;
     align-items: center;
     background: #00000085;
   /*  background: rgba(0, 0, 0, 0.164); /* Optional: semi-transparent background */
-    z-index: 1008; /* Ensures it is above everything */
+    z-index: 10008; /* Ensures it is above everything */
 }
 .signin_form {
     color: rgb(255, 255, 255);
